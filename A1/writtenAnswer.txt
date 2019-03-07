@@ -1,0 +1,65 @@
+1)
+Assume N is a positive integer for 1a, 1b, 1c.
+
+1a)
+If Pacman is in the corner, then the branching factor of the successor function is 2. Since there are 2 walls around the Pacman, then there are 2 directions, where the Pacman cannot move to. Also, there is no interior walls, then there must be 2 open directions Pacman can move to. Thus, the number of the successor states, i.e. the branching factor, is 2.
+
+1b)
+If Pacman is in the middle, then the branching factor of the successor function is 4, since there is not any interior wall, and Pacman can move to any of the 4 directions. Thus, the maximum number of the successor states, i.e. the branching factor, is 4.
+
+1c)
+The maximum possible depth of the search spaces is (N * N - 1), since there are N * N spaces Pacman can go to, and the maximum-depth = deepest level - 1. Also, we learned in the lecture that the maximum number of state spaces decides the maximum possible depth.
+
+
+
+2a)
+We know:
+ctotal = the optimal cost solution;
+cmin <= non-zero positive cost of transitions c <= cmax;
+
+Then the maximum number of transitions between the starting position and the solution = 
+ctotal / cmin in the worst case. Then the maximum number of transitions = d by the definition of d.
+
+In the A* search, the node with the minimum evaluation cost will be expanded firstly. Also, by the definition of monotonicity, the deeper level nodes' evaluation cost will be higher than the lower nodes' heuristic cost. Therefore, by the time a node is being expanded, all nodes with lower evaluation cost at lower levels must have already been expanded. Assume the solution node is the left-most node at its level. When A* search is expanding the solution node, all node at the same level must be on the open list.
+
+Since there is no cycle-checking, and the maximum number of states produced by the successor function is 4. Therefore, at the time the solution is found, the maximum number of paths on the open list n = 4 ^ (ctotal / cmin).
+
+2b)
+Assume n is 1 or a positive integer, which is a multiple of 4. Otherwise, we might need use the ceiling function.
+
+Since the maximum number of states produced by the successor function is 4, and we can have at most n paths on the open list. Then maximum number of transitions = log4(n). 
+
+We know that cmin <= non-zero positive cost of transitions c <= cmax. 
+
+Thus, cmin * log4(n) <= the total cost of the solution that we can guarantee we will find <= cmax * log4(n). 
+
+
+
+3a)
+Yes. We learned in the lecture: monotonicity implies admissibility, then admissibility implies optimality. Since the heuristic function h(n) is monotone, then running A* with the evaluation function will yield an optimal solution.
+
+3b)
+No. 3*h(n) might not be a monotone function.
+
+Upper bound ratio 
+= Cost of returned solution / Cost of optimal solution
+= [g(n) + 3h(n)] / [g(n) + 3h*(n)]
+= 3, if g(n) = 0
+< 3, if g(n) > 0
+
+3c)
+Yes. This question is similar with 3a. Although the cost of transitions between nodes isometrically increases, the heuristic function is still monotone. Thus, monotonicity implies admissibility, then admissibility implies optimality. All costs might be relatively higher, but A* with the evaluation function can still yield an optimal solution.
+
+
+
+4a)
+Suppose that the Pacman is searching for randomly located targets in a relatively large sample space, i.e. the branching factor is large, then h1 might be better than h2. 
+
+As we learned in the lecture, the number of nodes grows exponentially. Although h2 requires less computing time, the time h2 saves might not remedy the time wasted on expanding extra nodes. More redundant calculations can be produced as the depth goes deeper. On the other hand, h1 will expand fewer nodes. Eventually, the computing time might be saved by expanding fewer nodes.
+Q7 in Part I is an instance, the Paceman is searching for all nodes in the maze. The state space can be large, since there are many ways to reach the goal. However, we do not want to find all of them. We want to keep the state spaces small and do less computation. 
+
+4b)
+Suppose that the Pacman is searching for the specific targets in a relatively small sample space, i.e. the branching factor is small, then h2 might be better than h1. 
+
+A small-sample problem will usually not require the A* search to expand too many nodes, and more specific targets allow the monotone heuristic h2 to estimate the potential cost accurately. The solution to a relaxed problem found by A* search can also be a solution to the initial problem. Meanwhile, the compute time will not be too long, which can remedy the time wasted on expanding the extra nodes.
+Q6 in Part I is an example, the Pacman is searching for only 4 corners, but not a large number of randomly-located foods in the maze. In this problem, the mazes' sizes are small. Moreover, the expanded nodes in this problem are not as many as the nodes expanded in the Q7.
